@@ -31,11 +31,13 @@ export const CartItem = ({ id, quantity, hasRemoveButton = true }: Props) => {
               x{quantity}
             </Text>
           </HStack>
-          <Text fontWeight="bold" opacity={0.6} style={{ marginTop: 0 }}>
-            R${item.price}
+          <Text fontWeight="bold" opacity={0.6}>
+            R$ {item.price.toFixed(2).replace('.', ',')}
           </Text>
         </Stack>
-        <Text>R${Number(item.price) * quantity}</Text>
+        <Text>
+          R$ {(item.price * quantity).toFixed(2).replace('.', ',')}
+        </Text>
       </Flex>
       {hasRemoveButton && (
         <IconButton

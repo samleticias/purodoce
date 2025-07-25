@@ -97,7 +97,7 @@ function Checkout() {
               ))}
             </Box>
             <Text w="100%" fontWeight="bold" fontSize={20} align="end">
-              Subtotal: R${total}
+              Subtotal: R$ {total.toFixed(2).replace('.', ',')}
             </Text>
           </Stack>
         )}
@@ -108,7 +108,7 @@ function Checkout() {
               <RadioGroup options={["Boleto", "Cartão de Crédito", "PIX"]} />
             </Box>
             <Text w="100%" fontWeight="bold" fontSize={20} align="end">
-              Subtotal: R${total}
+              Subtotal: R$ {total.toFixed(2).replace('.', ',')}
             </Text>
           </VStack>
         )}

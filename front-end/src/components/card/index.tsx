@@ -5,10 +5,15 @@ import {
   IconButton,
   Image,
   Text,
+  Box
 } from "@chakra-ui/react";
 import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
 import { CatalogItem } from "../../types/products";
 import { useShoppingCart } from "./../../context/ShoppingCartContext";
+
+function formatarPreco(preco: number) {
+  return preco.toFixed(2).replace('.', ',');
+}
 
 export const Card = ({ id, name, image, details, price }: CatalogItem) => {
   const {
@@ -34,7 +39,7 @@ export const Card = ({ id, name, image, details, price }: CatalogItem) => {
     >
       <Image
         borderRadius="full"
-        boxSize="150px"
+        boxSize="200px"
         src={image}
         alt={image}
         objectFit="cover"
@@ -45,10 +50,10 @@ export const Card = ({ id, name, image, details, price }: CatalogItem) => {
         justifyContent="space-between"
         alignItems="center"
       >
-        <Flex w="100%" justifyContent="space-between">
+        <Box w="100%" justifyContent="space-between">
           <Text fontWeight="bold">{name}</Text>
-          <Text fontWeight="bold"> R${price}</Text>
-        </Flex>
+          <Text fontWeight="bold">R$ {formatarPreco(price)}</Text>
+        </Box>
         <Text align="justify">{details}</Text>
         {quantity >= 1 ? (
           <>

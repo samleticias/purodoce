@@ -50,12 +50,18 @@ export const Cart = ({ isOpen, onClose }: Props) => {
             <Stack w="100%">
               <Flex w="100%" justifyContent="flex-end">
                 <Text fontWeight="bold" fontSize={20}>
-                  Subtotal: R$
-                  {cartItems.reduce((total, cartItem) => {
-                    const item = items.find((i) => i.id === cartItem.id);
-                    return total + (item?.price || 0) * cartItem.quantity;
-                  }, 0)}
-                </Text>
+                Subtotal:{' '}
+                R$
+                {
+                  cartItems
+                    .reduce((total, cartItem) => {
+                      const item = items.find((i) => i.id === cartItem.id);
+                      return total + (item?.price || 0) * cartItem.quantity;
+                    }, 0)
+                    .toFixed(2)
+                    .replace('.', ',')
+                }
+              </Text>
               </Flex>
               <Flex w="100%" justifyContent="flex-end" alignItems="flex-end">
                 <HStack>
