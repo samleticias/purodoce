@@ -39,7 +39,7 @@ purodoce/
 
 ## Telas do Sistema
 
-Abaixo, algumas telas da aplicação para ilustrar as funcionalidades:
+Abaixo, algumas telas da aplicação (em desenvolvimento) para ilustrar as funcionalidades:
 
 ### Tela Inicial
 ![Tela Inicial](https://github.com/samleticias/purodoce/blob/main/screenshots/tela-inicial.png)
