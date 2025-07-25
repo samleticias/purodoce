@@ -36,3 +36,28 @@ purodoce/
 ├── front-end/ # Aplicação React + Vite
 ├── README.md # Documentação do projeto
 ```
+
+## Telas do Sistema
+
+Abaixo, algumas telas da aplicação para ilustrar as funcionalidades:
+
+### Tela Inicial
+![Tela Inicial](https://github.com/samleticias/purodoce/blob/main/screenshots/tela-inicial.png)
+
+### Catálogo dos Produtos
+![Catálogo 2](https://github.com/samleticias/purodoce/blob/main/screenshots/catalogo2.png)
+
+### Carrinho
+![Carrinho](https://github.com/samleticias/purodoce/blob/main/screenshots/carrinho.png)
+
+### Tela de Confirmação dos Itens
+![Confirmação dos Itens](https://github.com/samleticias/purodoce/blob/main/screenshots/confirmacao-itens.png)
+
+### Tela de Cadastro de Dados Pessoais
+![Dados Pessoais](https://github.com/samleticias/purodoce/blob/main/screenshots/dados-pessoais.png)
+
+### Tela de Escolha da Forma de Pagamento
+![Forma de Pagamento](https://github.com/samleticias/purodoce/blob/main/screenshots/forma-pagamento.png)
+
+### Tela de Pedido Finalizado
+![Pedido Finalizado](https://github.com/samleticias/purodoce/blob/main/screenshots/pedido-finalizado.png)
