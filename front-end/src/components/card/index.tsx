@@ -8,7 +8,9 @@ import {
   Box
 } from "@chakra-ui/react";
 import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 import { CatalogItem } from "../../types/products";
+import { isAuthenticated } from "../../utils/auth";
 import { useShoppingCart } from "./../../context/ShoppingCartContext";
 
 function formatarPreco(preco: number) {
@@ -23,6 +25,7 @@ export const Card = ({ id, name, image, details, price }: CatalogItem) => {
     removeFromCart,
   } = useShoppingCart();
   const quantity = getItemQuantity(id);
+  const navigate = useNavigate();
 
   return (
     <Flex
@@ -86,7 +89,13 @@ export const Card = ({ id, name, image, details, price }: CatalogItem) => {
             <Button
               colorScheme="red"
               color="white"
-              onClick={() => increaseCartQuantity(id)}
+              onClick={() => {
+                if (!isAuthenticated()) {
+                  navigate("/login");
+                } else {
+                  increaseCartQuantity(id);
+                }
+              }}
             >
               Adicionar ao carrinho
             </Button>

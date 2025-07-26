@@ -5,18 +5,18 @@ import {
   HStack,
   useMediaQuery,
   Image,
-  Button as ChakraButton,
-  IconButton,
-  useDisclosure,
   Avatar,
   AvatarBadge,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { Menu } from "../menu";
 import logo from "../../assets/logo-puro-doce.svg";
 import { Button } from "../button";
 import { FiShoppingCart } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+import { isAuthenticated, logout } from "../../utils/auth";
 import { Cart } from "../cart";
-import { useShoppingCart } from './../../context/ShoppingCartContext';
+import { useShoppingCart } from "../../context/ShoppingCartContext";
 
 const NavButtons = () => {
   return (
@@ -40,10 +40,14 @@ const NavButtons = () => {
 
 export default function Header() {
   const [isMobile] = useMediaQuery("(max-width: 720px)");
-
-  const { cartQuantity } = useShoppingCart()
-
+  const { cartQuantity } = useShoppingCart();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <>
@@ -73,25 +77,43 @@ export default function Header() {
             PuroDoce
           </Text>
         </HStack>
-        <HStack>
-          <HStack>
-            {isMobile ? (
-              <Menu
-                options={[
-                  { label: "Home", link: "/" },
-                  { label: "About", link: "/about" },
-                ]}
-              />
-            ) : (
-              <NavButtons />
-            )}
-          </HStack>
+
+        <HStack spacing={4}>
+          {isMobile ? (
+            <Menu
+              options={[
+                { label: "Home", link: "/" },
+                { label: "About", link: "/about" },
+              ]}
+            />
+          ) : (
+            <NavButtons />
+          )}
+
+          {!isAuthenticated() ? (
+            <Button
+              label="Login"
+              link="/login"
+              variant="outline"
+              colorScheme="whiteAlpha"
+              color="white"
+            />
+          ) : (
+            <Button
+              label="Sair"
+              variant="solid"
+              colorScheme="red"
+              onClick={handleLogout}
+              _hover={{ bg: "red.600" }} 
+            />
+          )}
+
           <Box as="button" onClick={onOpen}>
-          <Avatar bg="transparent" icon={<FiShoppingCart color="#fff" />}>
-            <AvatarBadge border="none" color="white">
-              {cartQuantity ? cartQuantity : <></>}
-            </AvatarBadge>
-          </Avatar>
+            <Avatar bg="transparent" icon={<FiShoppingCart color="#fff" />}>
+              <AvatarBadge border="none" color="white">
+                {cartQuantity ? cartQuantity : <></>}
+              </AvatarBadge>
+            </Avatar>
           </Box>
         </HStack>
       </Flex>
