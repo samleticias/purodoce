@@ -44,6 +44,10 @@ export default function Header() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
 
+  const handleGoHome = () => {
+    navigate("/");
+  };
+
   const handleLogout = () => {
     logout();
     navigate("/login");
@@ -62,7 +66,12 @@ export default function Header() {
         alignItems="center"
         p="1rem"
       >
-        <HStack>
+
+        <HStack
+          onClick={handleGoHome}
+          cursor="pointer"          
+          userSelect="none"        
+        >
           <Image maxW="50px" src={logo} alt="PuroDoce" objectFit="cover" />
           <Text
             pb={{
