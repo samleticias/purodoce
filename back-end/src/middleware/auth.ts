@@ -7,13 +7,13 @@ interface RequestWithUserId extends ExpressRequest {
 
 export const auth = (req: RequestWithUserId, res: Response, next: NextFunction) => {
   const token = req.headers.authorization?.split(' ')[1];
-  if (!token) return res.status(401).json({ error: 'Token não fornecido.' });
+  if (!token) return res.status(401).json({ error: 'Token not provided.' });
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'default_secret') as { id: number };
     req.userId = decoded.id;
     next();
   } catch (err) {
-    return res.status(403).json({ error: 'Token inválido.' });
+    return res.status(403).json({ error: 'Invalid token.' });
   }
 };

@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,41 +10,41 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Cliente {
-  id    Int    @id @default(autoincrement())
-  nome  String
-  email String @unique
-  senha String
+model Client {
+  id     Int    @id @default(autoincrement())
+  name   String
+  email  String @unique
+  password String
 
-  pedidos Pedido[]
+  orders Order[]
 }
 
-model Produto {
+model Product {
   id      Int    @id @default(autoincrement())
   name    String
   image   String
   details String
   price   Float
 
-  pedidos PedidoProduto[]
+  orderItems OrderProduct[]
 }
 
-model Pedido {
+model Order {
   id        Int      @id @default(autoincrement())
-  clienteId Int
-  criadoEm  DateTime @default(now())
+  clientId  Int
+  createdAt DateTime @default(now())
 
-  cliente  Cliente         @relation(fields: [clienteId], references: [id])
-  produtos PedidoProduto[]
+  client     Client         @relation(fields: [clientId], references: [id])
+  orderItems OrderProduct[]
 }
 
-model PedidoProduto {
-  id       Int    @id @default(autoincrement())
-  pedido   Pedido @relation(fields: [pedidoId], references: [id])
-  pedidoId Int
+model OrderProduct {
+  id         Int     @id @default(autoincrement())
+  order      Order   @relation(fields: [orderId], references: [id])
+  orderId    Int
 
-  produto   Produto @relation(fields: [produtoId], references: [id])
-  produtoId Int
+  product    Product @relation(fields: [productId], references: [id])
+  productId  Int
 
-  quantidade Int
+  quantity   Int
 }

@@ -9,7 +9,7 @@ interface Item {
 let items: Item[] = [];
 
 export async function carregarItens() {
-  const resposta = await fetch('http://localhost:3000/api/produtos');
+  const resposta = await fetch('http://localhost:3000/api/products');
   if (!resposta.ok) throw new Error('Erro ao buscar produtos');
   items = await resposta.json() as Item[];
   return items;

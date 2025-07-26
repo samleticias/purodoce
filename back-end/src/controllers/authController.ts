@@ -1,36 +1,24 @@
 import { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-
-const prisma = new PrismaClient();
-const secret = process.env.JWT_SECRET || 'default_secret';
+import { registerService, loginService } from '../services/authService';
 
 export const register = async (req: Request, res: Response) => {
-  const { nome, email, senha } = req.body;
+  const { name, email, password } = req.body;
 
-  const existente = await prisma.cliente.findUnique({ where: { email } });
-  if (existente) return res.status(400).json({ error: 'Email já cadastrado.' });
-
-  const senhaHash = await bcrypt.hash(senha, 10);
-
-  const cliente = await prisma.cliente.create({
-    data: { nome, email, senha: senhaHash },
-  });
-
-  res.status(201).json(cliente);
+  try {
+    const client = await registerService({ name, email, password });
+    res.status(201).json(client);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message || 'Error registering user.' });
+  }
 };
 
 export const login = async (req: Request, res: Response) => {
-  const { email, senha } = req.body;
+  const { email, password } = req.body;
 
-  const cliente = await prisma.cliente.findUnique({ where: { email } });
-  if (!cliente) return res.status(401).json({ error: 'Credenciais inválidas.' });
-
-  const senhaCorreta = await bcrypt.compare(senha, cliente.senha);
-  if (!senhaCorreta) return res.status(401).json({ error: 'Credenciais inválidas.' });
-
-  const token = jwt.sign({ id: cliente.id }, secret, { expiresIn: '1d' });
-
-  res.json({ token, cliente: { id: cliente.id, nome: cliente.nome, email: cliente.email } });
+  try {
+    const data = await loginService({ email, password });
+    res.json(data);
+  } catch (err: any) {
+    res.status(401).json({ error: err.message || 'Invalid credentials.' });
+  }
 };
