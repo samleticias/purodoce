@@ -14,7 +14,7 @@ export const Footer = () => {
       p="1rem"
     >
       <Text>
-        Development with❤️by{" "}
+        Development with ❤️ by{" "}
         <Link href="https://github.com/samleticias">Sammya Letícia</Link>
       </Text>
     </Flex>

@@ -22,14 +22,15 @@ const NavButtons = () => {
   return (
     <HStack spacing={4}>
       <Button
-        label="Home"
+        label="Início"
         link="/"
         variant="outline"
         colorScheme="whiteAlpha"
         color="white"
       />
       <Button
-        label="About"
+        label="Sobre"
+        link="/about"
         variant="outline"
         colorScheme="whiteAlpha"
         color="white"
@@ -91,8 +92,8 @@ export default function Header() {
           {isMobile ? (
             <Menu
               options={[
-                { label: "Home", link: "/" },
-                { label: "About", link: "/about" },
+                { label: "Início", link: "/" },
+                { label: "Sobre", link: "/about" },
               ]}
             />
           ) : (
