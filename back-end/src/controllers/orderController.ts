@@ -5,20 +5,24 @@ interface RequestWithUserId extends ExpressRequest {
   userId?: number;
 }
 
+// Criar pedido
 export const createOrder = async (req: RequestWithUserId, res: Response) => {
   const clientId = req.userId;
+  if (!clientId) return res.status(401).json({ error: 'User not authenticated.' });
 
-  if (typeof clientId !== 'number') {
-    return res.status(400).json({ error: 'Client ID not found.' });
-  }
+  const { products, addressId } = req.body;
 
-  const { products } = req.body;
+  if (!Array.isArray(products) || products.length === 0)
+    return res.status(400).json({ error: 'Invalid products list.' });
+
+  if (!addressId)
+    return res.status(400).json({ error: 'Delivery address is required.' });
 
   try {
-    const order = await createOrderService(clientId, products);
+    const order = await createOrderService(clientId, products, addressId);
     res.status(201).json(order);
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Error creating order.' });
   }
 };

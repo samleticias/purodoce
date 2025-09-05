@@ -6,30 +6,41 @@ import {
   VStack,
   Text,
   Link,
+  Box
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 
 export default function RegisterForm() {
   const [name, setName] = useState("");
+  const [cpf, setCpf] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [erro, setErro] = useState("");
+  const [sucesso, setSucesso] = useState(""); 
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
+    setErro("");     
+    setSucesso("");
+
     try {
       const res = await fetch("http://localhost:3000/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, cpf, email, password }),
       });
 
       const data = await res.json();
 
       if (!res.ok) throw new Error(data.error || "Erro ao registrar.");
 
-      navigate("/login");
+      setSucesso("Cadastro realizado com sucesso! Você será redirecionado...");
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+
     } catch (err: any) {
       setErro(err.message);
     }
@@ -38,7 +49,17 @@ export default function RegisterForm() {
   return (
     <VStack spacing={6} maxW="600px" w="100%" minW="300px" mx="auto" mt="6" p="4">
 
-      {erro && <Text color="red.500" fontSize="md">{erro}</Text>}
+      {erro && (
+        <Box bg="red.100" color="red.800" p={3} borderRadius="md" w="100%">
+          {erro}
+        </Box>
+      )}
+
+      {sucesso && (
+        <Box bg="green.100" color="green.800" p={3} borderRadius="md" w="100%">
+          {sucesso}
+        </Box>
+      )}
 
       <FormControl>
         <FormLabel fontSize="lg">Nome</FormLabel>
@@ -50,6 +71,20 @@ export default function RegisterForm() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Digite seu nome"
+        />
+      </FormControl>
+
+      <FormControl>
+        <FormLabel fontSize="lg">CPF</FormLabel>
+        <Input
+          size="lg"
+          fontSize="md"
+          type="text"
+          w="100%"
+          minW="280px"
+          value={cpf}
+          onChange={(e) => setCpf(e.target.value)}
+          placeholder="Digite seu CPF"
         />
       </FormControl>
 

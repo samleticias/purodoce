@@ -2,28 +2,25 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-interface ProductInput {
-  productId: number;
-  quantity: number;
-}
-
-export const createOrderService = async (clientId: number, products: ProductInput[]) => {
+export const createOrderService = async (
+  clientId: number,
+  products: { productId: number; quantity: number }[],
+  addressId: number
+) => {
   const order = await prisma.order.create({
     data: {
       clientId,
+      enderecoId: addressId,
       orderItems: {
-        create: products.map(item => ({
+        create: products.map((item) => ({
           product: { connect: { id: item.productId } },
           quantity: item.quantity,
         })),
       },
     },
     include: {
-      orderItems: {
-        include: {
-          product: true,
-        },
-      },
+      orderItems: { include: { product: true } },
+      endereco: true,
     },
   });
 

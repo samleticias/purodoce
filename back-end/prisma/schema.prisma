@@ -11,40 +11,70 @@ datasource db {
 }
 
 model Client {
-  id     Int    @id @default(autoincrement())
-  name   String
-  email  String @unique
-  password String
+  id        Int               @id @default(autoincrement())
+  name      String
+  email     String            @unique
+  password  String
+  cpf       String            @unique
 
-  orders Order[]
+  orders    Order[]
+  enderecos ClienteEndereco[]
+}
+
+model Endereco {
+  id           Int               @id @default(autoincrement())
+  rua          String
+  numero       String
+  complemento  String?
+  bairro       String
+  cidade       String
+  estado       String
+  cep          String
+
+  clienteEnd   ClienteEndereco[]
+
+  orders       Order[]           @relation("OrderEndereco")
+}
+
+model ClienteEndereco {
+  id         Int     @id @default(autoincrement())
+  clientId   Int
+  enderecoId Int
+  tipo       String // exemplo: "residencial", "comercial", etc.
+
+  client     Client   @relation(fields: [clientId], references: [id])
+  endereco   Endereco @relation(fields: [enderecoId], references: [id])
+
+  @@unique([clientId, enderecoId])
 }
 
 model Product {
-  id      Int    @id @default(autoincrement())
-  name    String
-  image   String
-  details String
-  price   Float
-
-  orderItems OrderProduct[]
+  id          Int            @id @default(autoincrement())
+  name        String
+  image       String
+  details     String
+  price       Float
+  orderItems  OrderProduct[]
 }
 
 model Order {
-  id        Int      @id @default(autoincrement())
-  clientId  Int
-  createdAt DateTime @default(now())
+  id         Int             @id @default(autoincrement())
+  clientId   Int
+  enderecoId Int             
 
-  client     Client         @relation(fields: [clientId], references: [id])
+  createdAt  DateTime        @default(now())
+
+  client     Client          @relation(fields: [clientId], references: [id])
+  endereco   Endereco        @relation("OrderEndereco", fields: [enderecoId], references: [id])
   orderItems OrderProduct[]
 }
 
 model OrderProduct {
-  id         Int     @id @default(autoincrement())
-  order      Order   @relation(fields: [orderId], references: [id])
+  id         Int      @id @default(autoincrement())
   orderId    Int
-
-  product    Product @relation(fields: [productId], references: [id])
   productId  Int
-
   quantity   Int
+
+  order      Order    @relation(fields: [orderId], references: [id])
+  product    Product  @relation(fields: [productId], references: [id])
 }

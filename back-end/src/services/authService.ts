@@ -1,22 +1,13 @@
 import { PrismaClient } from '@prisma/client';
+import { LoginInput } from '../dto/LoginInput'
+import { RegisterInput } from '../dto/RegisterInput'
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 const prisma = new PrismaClient();
 const secret = process.env.JWT_SECRET || 'default_secret';
 
-interface RegisterInput {
-  name: string;
-  email: string;
-  password: string;
-}
-
-interface LoginInput {
-  email: string;
-  password: string;
-}
-
-export const registerService = async ({ name, email, password }: RegisterInput) => {
+export const registerService = async ({ name, email, password, cpf }: RegisterInput) => {
   const existingUser = await prisma.client.findUnique({ where: { email } });
   if (existingUser) {
     throw new Error('Email already registered.');
@@ -25,7 +16,7 @@ export const registerService = async ({ name, email, password }: RegisterInput) 
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const client = await prisma.client.create({
-    data: { name, email, password: hashedPassword },
+    data: { name, email, password: hashedPassword, cpf }, 
   });
 
   return client;
